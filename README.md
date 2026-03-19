@@ -1,13 +1,25 @@
-# AI Empowered Product Development Course
+# AI Empowered Product Development
 
-This is a small course to help you become proficent in using Claude Code and other AI tools to increase the velocity of the product development of product teams.
+This repo contains two bootcamps for learning AI-assisted development with Claude Code and related tools. Choose the one that fits your role.
 
-All bootcamp content, exercises, and learning materials are located in the [Course Material](./Course%20Material/README.md) folder. Start there to begin the AI-Assisted Development Bootcamp.
+---
 
-🚜 This project will continue to be developed and include further modules in the future.
+## AI x Design Bootcamp
 
-## Setup
+For design engineers: people who think in components, interactions, and systems, and who are comfortable enough in code to build what they design.
 
-The rest of the repo provides a small todo application built with vanilla HTML, CSS, and JavaScript is provided to test your AI-empowered development skills.
+Covers the full workflow from writing a specification, to generating a first build with Lovable or Figma Make, to refining and shipping with Claude Code. Includes Figma MCP, Supabase, safety guardrails, context management, and a research-to-roadmap workflow.
 
-Start here: [Getting Started](./Course%20Material/1-getting-started.md) ⭐️
+**Start here**: [Design Bootcamp](./Design%20Bootcamp/README.md)
+
+A [portfolio boilerplate](./portfolio-boilerplate/) is included for participants who want to skip the generation step and go straight to Claude Code.
+
+---
+
+## AI-Assisted Development Bootcamp
+
+For engineers, product managers, and anyone who wants to learn AI-assisted development with a general focus.
+
+Covers Claude Code basics, MCP, safety guardrails, task orchestration, advanced planning, QA and pull requests, LSP, and data transformation.
+
+**Start here**: [Course Material](./Course%20Material/README.md)
