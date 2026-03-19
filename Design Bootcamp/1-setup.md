@@ -71,8 +71,8 @@ cd ai-empowered-development-course
 
 You do not need these now, but set them up before starting the relevant modules:
 
-- **Figma** account: needed for Modules 4 and 5. [figma.com](https://figma.com)
-- **Supabase** account: needed for Module 7. [supabase.com](https://supabase.com)
+- **Figma** Paid seat account: needed for Modules 4 and 5. [figma.com](https://figma.com)
+- **Supabase** account: needed for Module 8. [supabase.com](https://supabase.com)
 - **Lovable or Figma Make** access: needed if you are doing Module 2 (the generation step). If you are skipping it, the boilerplate covers you.
 
 ---

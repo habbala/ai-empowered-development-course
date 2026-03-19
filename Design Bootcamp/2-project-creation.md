@@ -91,7 +91,7 @@ They are not good at:
 - Following your existing design system
 - Maintaining consistency across many iterations
 
-This is exactly why you migrate to Claude Code. The generator gets you to 60%. Claude Code gets you the rest, with your design intent intact.
+This is exactly why you migrate to Claude Code. The generator gets you to 60%. Claude Code gets you the rest, with your design intent intact. Claude Code is also far more cost-efficient than tool like Lovable, as easier to get a enterprise license for. If you can use the Claude desktop app, you also avoid much of the pain of setting up Claude Code in the terminal and using it through an IDE. 
 
 ### Generate your first build
 
