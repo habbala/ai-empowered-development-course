@@ -179,28 +179,19 @@ called feature/hero-refinements, commit the changes with a clear message,
 and open a pull request.
 ```
 
-### Automated design QA
+### Reviewing a PR as a designer
 
-The PR workflow becomes even more powerful with automated review. Tools like [CodeRabbit](https://coderabbit.ai) and [Greptile](https://greptile.com) integrate with GitHub and post review comments automatically when a PR is opened.
+When the agent opens the PR, your job is to review it on GitHub the same way a developer would, but with your design eye. The diff shows exactly what changed. Look for:
 
-For design engineers, this is automated design QA. These tools catch:
-- Missing `aria-label` attributes on interactive elements
-- Colour contrast issues
-- Inconsistent spacing or class names
-- Patterns that contradict the rest of the codebase
+- Colour values: are they using tokens from the design file or raw hex?
+- Spacing: does it match the system, or are there arbitrary values?
+- States: are hover, focus, and disabled states all present?
+- Accessibility: are interactive elements labelled correctly?
+- Scope: did the agent touch anything you did not ask it to?
 
-They do not replace your judgment. They surface issues before you have to find them manually.
+If something is off, describe the fix and ask Claude Code to push an update to the same branch. The PR will update automatically.
 
-### Setting up CodeRabbit
-
-1. Go to [coderabbit.ai](https://coderabbit.ai)
-2. Click **Add Repository**
-3. Authenticate with GitHub and select your portfolio repo
-4. Configure: security on, code style on, documentation optional
-
-From this point on, every PR gets an automated review within minutes of opening.
-
-### Exercise: Agent-created PR with automated review
+### Exercise: Agent-created PR
 
 1. Ask Claude Code to implement a feature and open a PR:
    ```
@@ -209,23 +200,16 @@ From this point on, every PR gets an automated review within minutes of opening.
    Create a branch called feature/scroll-to-top and open a PR when done.
    ```
 
-2. Set up CodeRabbit on the repo (see above).
+2. Open the PR on GitHub and review the diff using the questions above.
 
-3. Open the PR on GitHub and wait for the automated review (usually under 2 minutes).
+3. If you find something to fix, ask Claude Code to address it and push an update.
 
-4. Read the review comments. Note what it caught and whether you agree.
-
-5. If it flagged a real issue, ask Claude Code to fix it:
-   ```
-   The review flagged [specific issue]. Fix it and push an update to the branch.
-   ```
+4. Once you are satisfied, merge the PR on GitHub.
 
 ### Acceptance criteria
 - [ ] Agent creates the branch, commits, and opens a PR without manual git commands
-- [ ] CodeRabbit or Greptile is connected to the repo
-- [ ] Automated review comments appear on the PR
-- [ ] You can describe at least one issue the review raised
-- [ ] You understand why the PR replaces Figma redlines as the handover artefact
+- [ ] You have reviewed the diff on GitHub and can describe what changed
+- [ ] You understand why the PR diff replaces Figma redlines as the handover artefact
 
 ---
 

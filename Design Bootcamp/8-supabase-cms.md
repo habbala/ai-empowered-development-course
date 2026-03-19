@@ -192,4 +192,4 @@ You should see `supabase` listed.
 
 ---
 
-[Previous: Working with Context](6-working-with-context.md) | [Next: Research, Discovery and Roadmapping](8-research-discovery-roadmapping.md)
+[Previous: Research, Discovery and Roadmapping](7-research-discovery-roadmapping.md) | [Back to Course Overview](README.md)

@@ -198,4 +198,4 @@ After completing this exercise, consider:
 
 ---
 
-[Previous: Supabase CMS](7-supabase-cms.md) | [Back to Course Overview](README.md)
+[Previous: Working with Context](6-working-with-context.md) | [Next: Supabase CMS](8-supabase-cms.md)

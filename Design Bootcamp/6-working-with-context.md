@@ -281,4 +281,4 @@ stop and ask before proceeding.
 
 ---
 
-[Previous: Safety and Guidelines](5-safety-and-guidelines.md) | [Next: Supabase CMS](7-supabase-cms.md)
+[Previous: Safety and Guidelines](5-safety-and-guidelines.md) | [Next: Research, Discovery and Roadmapping](7-research-discovery-roadmapping.md)

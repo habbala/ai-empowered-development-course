@@ -30,8 +30,8 @@ Module 1 covers the rest of the setup.
 | [4. MCPs](4-mcps.md) | Understand MCPs, install Figma MCP, align your repo with your design tokens | ~30 min |
 | [5. Safety and Guidelines](5-safety-and-guidelines.md) | SafetyNet, sandboxing, and custom rules for autonomous agents | ~20 min |
 | [6. Working with Context](6-working-with-context.md) | Context window management, write a Figma review skill, create DESIGN.md | ~45 min |
-| [7. Supabase CMS](7-supabase-cms.md) | Replace hardcoded content with a live Supabase backend | ~30 min |
-| [8. Research, Discovery and Roadmapping](8-research-discovery-roadmapping.md) | Use Claude Code for user research analysis and roadmapping | ~30 min |
+| [7. Research, Discovery and Roadmapping](7-research-discovery-roadmapping.md) | Use Claude Code for user research analysis and roadmapping | ~30 min |
+| [8. Supabase CMS](8-supabase-cms.md) | Replace hardcoded content with a live Supabase backend | ~30 min |
 
 ---
 
