@@ -130,6 +130,36 @@ Practical rules for now (expanded in Module 6):
 > [!WARNING]
 > When the context window fills up with unrelated code and previous conversation history, output quality degrades. You will notice the agent making mistakes it would not have made earlier in the session. That is the signal to use /clear and start fresh.
 
+### When Claude Code gets it wrong
+
+It will happen. The agent misreads a constraint, adds something you did not ask for, or produces something technically correct but visually off. Knowing how to recover is as important as knowing how to prompt.
+
+**Recognise the signal early.** The most common mistakes:
+- The agent changed a file you did not mention
+- The visual result looks right but the code uses raw hex instead of a token
+- The agent "improved" surrounding code as a side effect
+- The output contradicts an instruction you gave earlier in the same session
+
+**Correction vs restart.** If the mistake is isolated and small, describe exactly what is wrong and ask for a targeted fix:
+
+```
+The button you added uses #3D5AFE directly. Replace it with the `bg-accent`
+Tailwind class. Do not change anything else.
+```
+
+If the mistake suggests the context has drifted (the agent seems confused about the overall task, or is contradicting earlier decisions), do not keep patching. Use `/clear` and restart with a tighter, more explicit prompt. Iterating on a bad context makes things worse.
+
+**Tighten the prompt, not just the fix.** When you restart, add the constraint that the agent missed:
+
+```
+Before: "Add a hover state to the project cards"
+After:  "Add a hover state to the project cards in Projects.jsx only.
+         Use the border-accent class for the border change.
+         Do not modify any other component or file."
+```
+
+The pattern is: scope + token + boundary. What to touch, what to use, what to leave alone.
+
 ### Exercise: First prompts and a planned change
 
 1. Run the orientation prompt above. Read what Claude Code tells you about the project structure.

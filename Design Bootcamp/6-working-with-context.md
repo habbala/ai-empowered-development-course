@@ -63,7 +63,7 @@ Same task. Entirely different context quality.
 
 ---
 
-## Sub-Module 2: Write a Claude Skill for Figma review
+## Sub-Module 2: Design QA skills
 
 ### What a Skill is
 
@@ -71,92 +71,198 @@ In Claude Code, a Skill is a custom slash command you define yourself. It lives 
 
 Skills are stored in your project's `.claude/skills/` directory. Claude Code loads them automatically at startup.
 
-### The Skill we will build: /figma-review
+In this sub-module you will write two skills that together form a design QA checklist you run before every PR:
 
-This Skill, when invoked, will:
-1. Use the Figma MCP to read a specified frame or component from your design file
-2. Read the corresponding component file in the repo
-3. Compare them for discrepancies: spacing, colours, missing states, missing accessibility attributes
-4. Report the findings
+- `/figma-review`: checks design fidelity against the Figma source file
+- `/a11y-check`: audits a component for WCAG 2.1 AA accessibility issues
+
+Running both before opening a PR is the equivalent of a design review and an accessibility audit, without a separate meeting.
+
+---
+
+### Skill 1: /figma-review
 
 **Requires**: Figma MCP from Module 4 must be installed and connected.
 
-**Suggested use**: run `/figma-review` before every PR. It catches design drift before it reaches review, which ties directly back to the PR-as-handover workflow from Module 3.
+The skill reads a Figma frame via MCP and compares it against a component file. It focuses on what the Figma MCP can reliably return: named colour styles, text styles, and variant/state definitions. It does not attempt to pixel-match spacing values, which the MCP cannot return with enough precision to be useful.
 
-### Writing the Skill
-
-Create the file `.claude/skills/figma-review.md`:
+Create `.claude/skills/figma-review.md`:
 
 ```markdown
 # figma-review
 
-Review a component in the repo against its Figma counterpart.
+Check a component against its Figma source for design token and state drift.
 
 ## Usage
 /figma-review <figma-frame-url> <component-file-path>
 
 ## Instructions
+
 1. Use the Figma MCP to read the frame at the provided URL.
-   Retrieve: fill colours, typography, spacing values, border radii, and any
-   variant or state definitions present in the frame.
+   Retrieve: named fill styles, named text styles, and any component variants
+   or interactive states (hover, focus, disabled, active) defined in the frame.
+   If a property cannot be retrieved, note it as "unverifiable via MCP" rather
+   than skipping it.
 
 2. Read the component file at the provided path.
 
-3. Compare the two. For each property, note whether the implementation matches
-   the Figma frame. Flag any of the following:
-   - Colour values that differ from the Figma fills
-   - Font sizes, weights, or line heights that do not match the Figma text styles
-   - Spacing or padding that differs from the Figma auto-layout values
-   - States present in Figma (hover, focus, disabled) that are missing in the code
-   - Missing aria attributes on interactive elements visible in the Figma frame
+3. Compare what the MCP returned against the code. Flag:
+   - Colour values in the code that are raw hex, rgb, or hsl instead of a
+     named Tailwind token. List the Figma style name alongside the raw value found.
+   - Font size, weight, or line height values in the code that do not match
+     a named text style from the Figma frame.
+   - Interactive states present in Figma (hover, focus, disabled) that have no
+     corresponding CSS or className in the code.
+   - Interactive elements in the frame that are missing aria-label, aria-expanded,
+     or other ARIA attributes in the code.
 
-4. Return a structured report:
-   - Matching: list of properties that are correctly implemented
-   - Discrepancies: list of properties that differ, with the Figma value and the
-     current code value side by side
-   - Missing: list of states or attributes present in Figma but absent in the code
+4. Return a structured report with three sections:
+   - Matching: properties correctly implemented
+   - Discrepancies: properties that differ, showing the Figma style name and
+     the current code value side by side
+   - Unverifiable: properties the MCP could not return (note what to check manually)
 
 Do not make any changes. Only report.
 ```
 
-### Using the Skill
+---
 
-After creating the file, restart Claude Code. The skill is now available:
+### Skill 2: /a11y-check
 
-```bash
-/figma-review https://figma.com/file/.../FrameName src/components/Hero.jsx
+This skill audits a component file for WCAG 2.1 AA issues. It does two things: automatic checks it can run by reading the code, and a structured manual checklist it outputs for you to complete in the browser.
+
+The split matters. Automated checks catch what is visible in code (missing labels, wrong elements, outline removed). Manual checks catch what only a browser can reveal (focus order, contrast ratios, screen reader announcements).
+
+Create `.claude/skills/a11y-check.md`:
+
+```markdown
+# a11y-check
+
+Audit a component for WCAG 2.1 AA accessibility issues.
+
+## Usage
+/a11y-check <component-file-path>
+
+## Instructions
+
+Read the component file. Run all automatic checks below, then output the
+manual checklist.
+
+### Automatic checks
+
+**Semantic HTML**
+- Flag any div or span with an onClick handler that is missing a role attribute
+  and keyboard event handlers (onKeyDown or onKeyUp).
+- Flag any `<a>` tag used as a button (no href, or href="#"). It should be a
+  `<button>` element.
+- Flag any `<button>` used as a link (navigates to a URL). It should be an `<a>`.
+- Flag any `<img>` missing an alt attribute.
+- Flag any `<img>` with a non-empty alt that appears decorative (e.g. icons,
+  background illustrations). These should use alt="" or aria-hidden="true".
+- Flag any `<input>` or `<textarea>` that has no associated label (via htmlFor/id,
+  aria-label, or aria-labelledby).
+- Flag any heading level skip (e.g. h2 followed by h4 with no h3).
+
+**ARIA**
+- Flag any icon-only button (text content is only an icon or empty) that is
+  missing an aria-label.
+- Flag any button that toggles visibility (show/hide, open/close) that is
+  missing aria-expanded.
+- Flag any tabIndex value greater than 0.
+
+**Focus**
+- Flag any instance of `outline: none`, `outline: 0`, or `outlineStyle: none`
+  that is not accompanied by a custom :focus-visible replacement style.
+
+**Colour and motion**
+- List every hardcoded colour value found (hex, rgb, hsl, or named colours
+  other than inherit, transparent, or currentColor). These cannot be
+  contrast-checked automatically but must be verified manually.
+- Flag any CSS animation or transition defined without a corresponding
+  @media (prefers-reduced-motion) rule.
+
+### Manual checklist
+
+After the automatic findings, output this checklist exactly:
+
+---
+**Manual checks — complete these in the browser:**
+
+Keyboard navigation:
+- [ ] Tab through the component from top to bottom. Does focus move in a
+      logical, predictable order?
+- [ ] Can every interactive element (links, buttons, inputs) be activated
+      with Enter or Space?
+- [ ] Is focus always visible? Does it disappear at any point?
+- [ ] If the component has a modal, dropdown, or popover: can you open,
+      navigate, and close it using only the keyboard?
+
+Colour contrast (use browser DevTools > Accessibility, or the free
+Colour Contrast Analyser app):
+- [ ] Normal text (below 18pt regular / 14pt bold): minimum ratio 4.5:1
+- [ ] Large text (18pt+ regular / 14pt+ bold): minimum ratio 3:1
+- [ ] UI components and focus indicators against adjacent colours: minimum 3:1
+- [ ] Check each hardcoded colour listed in the automatic report above.
+
+Zoom and reflow:
+- [ ] Set browser zoom to 200%. Is all content readable and usable without
+      horizontal scrolling?
+- [ ] Set browser zoom to 400%. Does the layout reflow without loss of content?
+
+Screen reader (VoiceOver on Mac: Cmd + F5 to toggle):
+- [ ] Navigate through the component with VoiceOver. Is every interactive
+      element announced with a meaningful name and role?
+- [ ] Are decorative images skipped (silent when navigating past them)?
+- [ ] If the component has loading or error states: are they announced when
+      they appear?
+
+Motion:
+- [ ] Enable Reduce Motion (System Settings > Accessibility > Motion).
+      Do animations and transitions stop or simplify?
+---
+
+### Report format
+Return findings in three sections:
+- Passed: checks the component passes
+- Failures: issues found, with the line reference and a suggested fix
+- Manual checklist: the checklist above for the participant to complete
 ```
 
-Claude Code reads the Figma frame via the MCP, reads the file, and returns the comparison report.
+---
 
-### Exercise: Write and run /figma-review
+### Exercise: Write both skills and run them
 
-1. Create `.claude/skills/figma-review.md` with the content above.
+1. Create `.claude/skills/figma-review.md` and `.claude/skills/a11y-check.md` with the content above.
 
-2. Restart Claude Code and verify the skill loads:
+2. Restart Claude Code and verify both skills load:
    ```bash
    /skills
    ```
-   You should see `figma-review` listed.
+   Both `figma-review` and `a11y-check` should appear.
 
-3. Introduce a deliberate discrepancy: in `Hero.jsx`, change the CTA button colour to a value that does not match the Figma design file.
+3. Introduce a deliberate accessibility issue in `Hero.jsx`: remove the `aria-label` from the CTA link and remove the focus outline from the button.
 
-4. Run the Skill:
+4. Run `/a11y-check` on Hero.jsx:
+   ```bash
+   /a11y-check src/components/Hero.jsx
+   ```
+   Verify it catches both issues in the automatic section. Work through the manual checklist in your browser.
+
+5. Fix the issues Claude Code flagged, then run `/a11y-check` again. Confirm the automatic failures are resolved.
+
+6. Run `/figma-review` on the same component:
    ```bash
    /figma-review [figma-frame-url] src/components/Hero.jsx
    ```
-
-5. Verify: the report flags the colour discrepancy you introduced.
-
-6. Revert the change and run the Skill again. Confirm the report shows no discrepancies.
+   Note what it can verify automatically vs what is listed as unverifiable.
 
 ### Acceptance criteria
-- [ ] Skill file created at `.claude/skills/figma-review.md`
-- [ ] Claude Code recognises `/figma-review` after restart
-- [ ] Skill successfully reads the Figma frame via MCP
-- [ ] Deliberate discrepancy is detected and reported
-- [ ] Report distinguishes between matching properties and discrepancies
-- [ ] You understand how to use this before every PR
+- [ ] Both skill files created and listed by `/skills`
+- [ ] `/a11y-check` correctly flags the missing aria-label and removed focus outline
+- [ ] Manual checklist is completed in the browser for at least one component
+- [ ] `/figma-review` runs and returns a structured report (matching / discrepancies / unverifiable)
+- [ ] You understand which checks are automatic and which require a browser
+- [ ] You understand why running both before a PR is more reliable than a manual review alone
 
 ---
 
