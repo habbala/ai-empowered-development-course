@@ -1,72 +1,62 @@
-# AI-Assisted Development Bootcamp
+# AI x Design Bootcamp
 
-Welcome to the AI-Assisted Development Bootcamp! This collection of materials is designed to onboard and train consultants of different roles (engineering, product/project, design) in how to use AI-empowered development and AI tools to increase efficiency.
+Welcome to the AI x Design Bootcamp. This course is built for design engineers: people who think in components, interactions, and systems, and who are comfortable enough in code to build what they design.
 
-## Course Structure
+The bootcamp covers the full workflow, from writing a specification in plain language, to generating a first build with an AI UI tool, to refining and shipping with Claude Code. Along the way you will connect your design files directly to your codebase, manage a real content backend, and close the loop by feeding user research back into product decisions.
 
-This bootcamp is organized into modules, each building on previous concepts. Below is an overview of each section with suggested progression:
+The default project is a portfolio site. Most designers have designed one before, which means you already have opinions about what good looks like. That makes it a good vehicle for practising AI-assisted development without getting distracted by an unfamiliar domain. You are free to use any project you like instead.
 
-### General Modules (Foundation)
+---
 
-These modules cover foundational concepts that apply to all roles:
+## Before you start
 
-1. **[Getting Started](1-getting-started.md)** *[~10 minutes]*
-   - Prerequisites and setup
-   - Installing Claude Code
-   - Exercise: Run the TODO app locally
+You will need:
+- A GitHub account
+- A Figma account (for Modules 4 and 5)
+- A Supabase account (for Module 7)
+- Node.js 18 or later installed locally
 
-2. **[Working with AI Agents](2-working-with-ai-agents.md)** *[~20 minutes]*
-   - Understanding what agents are and their capabilities
-   - The importance of planning and structured prompts
-   - Context window management and optimization
-   - Exercise: Add localStorage persistence to the TODO app
+Module 1 covers the rest of the setup.
 
-3. **[Model Context Protocol (MCP)](3-model-context-protocol.md)** *[~20 minutes]*
-   - What MCP is and why it matters
-   - How MCP works with tools and resources
-   - Exercise: Use Context7 MCP to add date-fns library
+---
 
-4. **[Safety and Guardrails](4-safety-and-guardrails.md)** *[~20 minutes]*
-   - Why guardrails matter in autonomous execution
-   - Sandboxing and SafetyNet overview
-   - Setting up custom safety rules
-   - Exercise: Test SafetyNet protection
+## Course structure
 
-5. **[Task Orchestration with VibeKanban](5-task-orchestration-vibekanban.md)** *[~30-45 minutes]*
-   - Setting up VibeKanban for multi-agent execution
-   - Creating tickets from plans
-   - Running multiple agents in parallel
-   - Exercise: Implement 3 features in parallel with merge conflict resolution
+| Module | Title | Time |
+|--------|-------|------|
+| [1. Setup](1-setup.md) | Install Claude Code, Cursor, and set up GitHub | ~15 min |
+| [2. Project Creation](2-project-creation.md) | Write a spec, generate your first build in Lovable or Figma Make | ~30 min |
+| [3. Using Claude Code as a Designer](3-using-claude-code.md) | Migrate to Claude Code, learn the basics, introduce the PR as design handover | ~45 min |
+| [4. MCPs](4-mcps.md) | Understand MCPs, install Figma MCP, align your repo with your design tokens | ~30 min |
+| [5. Safety and Guidelines](5-safety-and-guidelines.md) | SafetyNet, sandboxing, and custom rules for autonomous agents | ~20 min |
+| [6. Working with Context](6-working-with-context.md) | Context window management, write a Figma review skill, create DESIGN.md | ~45 min |
+| [7. Research, Discovery and Roadmapping](7-research-discovery-roadmapping.md) | Use Claude Code for user research analysis and roadmapping | ~30 min |
+| [8. Supabase CMS](8-supabase-cms.md) | Replace hardcoded content with a live Supabase backend | ~30 min |
 
-6. **[Advanced Planning with Speckit](6-advanced-planning-speckit.md)** *[~30 minutes]*
-   - Spec-Driven Development concepts
-   - SpecKit workflow and commands
-   - When to use SpecKit vs simple planning
-   - Exercise: Add priority system to TODO app
+---
 
-### Engineering Specific
+## Skipping the generation step
 
-These modules are designed for engineers implementing features and managing code quality:
+If you want to jump straight to Claude Code without going through Lovable or Figma Make, use the included [portfolio-boilerplate](../portfolio-boilerplate/). It is a React + Tailwind CSS starter that looks similar to what those tools generate. Clone it, run it locally, and pick up at Module 3.
 
-7. **[QA and Pull Requests](7-qa-and-pull-requests.md)** *[~30 minutes]*
-   - Automated PR creation with agents
-   - AI-assisted code review techniques
-   - Tools: Greptile and CodeRabbit
-   - Exercise: Review PRs with AI assistance
+---
 
-8. **[Language Server Protocol (LSP)](8-language-server-protocol.md)** *[~30-45 minutes]*
-   - What LSP is and why it matters
-   - How agents use LSP for semantic understanding
-   - Setting up language servers
-   - Exercise: Explore code with LSP-powered agents
+## Narrative arc
 
-### Product / Design / Business
+Each module builds on the previous one. The arc looks like this:
 
-9. **[Transforming & Structuring Data](9-transforming-structuring-data.md)** *[~30 minutes]*
-   - Using AI to transform unstructured data
-   - Converting qualitative feedback to structured formats
-   - Exercise: Generate and structure user feedback
+```
+Spec (Module 2) --> First build (Module 2) --> Claude Code (Module 3)
+     |                                               |
+     |                                         Design tokens (Module 4)
+     |                                               |
+     |                                         Safety rules (Module 5)
+     |                                               |
+     |                                         Context habits (Module 6)
+     |                                               |
+     |                                         Live content (Module 7)
+     |                                               |
+     +--- Revised spec <-- Research insights (Module 8)
+```
 
-## Next Steps
-
-Start with [Getting Started](1-getting-started.md) to set up your environment, then progress through the modules based on your role and learning goals.
+Module 8 closes the loop: research insights become a revised spec, which feeds the next iteration. That cycle is the core of the design engineer workflow.
